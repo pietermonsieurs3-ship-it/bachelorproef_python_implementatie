@@ -26,3 +26,13 @@
 ## Individual Star Analysis (results)
 
 ## Result Analysis (discussion)
+**Corresponding scripts:** `fourierparametersplot.py` en `petersenplot.py`
+
+### How to run
+* python3 -m astro_env venv
+* source astro_env/bin/activate
+* pip install numpy matplotlib scikit-learn scipy (for petersen script)
+* python3 fourierparametersplot.py
+* python3 petersenplot.py
+
+---
