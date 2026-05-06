@@ -1,7 +1,7 @@
 ## This repository includes the following code
 
 ## Data Extraction (data)
-**Main script:** `JNBcodeWithError.txt`
+**Corresponding script:** `JNBcodeWithError.txt`
 
 ### How to use
 - Open the notebook  
