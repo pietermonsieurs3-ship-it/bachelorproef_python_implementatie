@@ -1,0 +1,117 @@
+import os
+import glob
+import lightkurve as lk
+import numpy as np
+
+# -------------------------
+# CLEAN OLD FILES
+# -------------------------
+txt_files = glob.glob("*.txt")
+
+for file in txt_files:
+    os.remove(file)
+    print(f"Deleted {file}")
+
+print("All previous .txt files removed.")
+
+# -------------------------
+# TARGET
+# -------------------------
+target = "221.89696 +16.84542"
+
+tess_spoc_sectors = [51]
+
+# -------------------------
+# SEARCH
+# -------------------------
+search = lk.search_lightcurve(target, mission="TESS")
+print(search)
+
+downloaded = 0
+
+# -------------------------
+# LOOP OVER RESULTS
+# -------------------------
+for result in search:
+
+    author = str(result.author)
+
+    # only TESS-SPOC
+    if "TESS-SPOC" not in author:
+        continue
+
+    if downloaded >= len(tess_spoc_sectors):
+        print("⚠ Extra results skipped")
+        continue
+
+    sector = tess_spoc_sectors[downloaded]
+    downloaded += 1
+
+    author_safe = author.replace(" ", "_")
+
+    # -------------------------
+    # DOWNLOAD
+    # -------------------------
+    try:
+        lc = result.download()
+    except Exception as e:
+        print(f"⚠ Download failed sector {sector}: {e}")
+        continue
+
+    # -------------------------
+    # EXTRACT DATA
+    # -------------------------
+    time = np.array(lc.time.value)
+    flux = np.array(lc.flux)
+    flux_err = np.array(lc.flux_err)
+
+    # remove invalid values
+    flux = np.where(flux > 0, flux, np.nan)
+
+    mask = (
+        ~np.isnan(time) &
+        ~np.isnan(flux) &
+        ~np.isnan(flux_err)
+    )
+
+    time = time[mask]
+    flux = flux[mask]
+    flux_err = flux_err[mask]
+
+    # sanity check
+    if len(time) == 0 or np.median(flux) == 0:
+        print(f"⚠ Invalid data sector {sector}, skipping")
+        continue
+
+    nan_fraction = np.sum(np.isnan(flux)) / len(flux)
+    if nan_fraction > 0.05:
+        print(f"⚠ High NaN fraction sector {sector}")
+
+    # -------------------------
+    # NORMALIZE
+    # -------------------------
+    median_flux = np.median(flux)
+
+    flux /= median_flux
+    flux_err /= median_flux
+
+    # -------------------------
+    # CONVERT TO MAGNITUDE
+    # -------------------------
+    mag = -2.5 * np.log10(flux)
+
+    mag_err = (2.5 / np.log(10)) * (flux_err / flux)
+
+    # -------------------------
+    # SAVE FILE
+    # -------------------------
+    filename = f"{target}_sector{sector}_{author_safe}.txt"
+
+    np.savetxt(
+        filename,
+        np.column_stack([time, mag, mag_err]),
+        header="Time Mag MagErr",
+        fmt="%.6f %.6f %.6f"
+    )
+
+    print(f"✅ Saved {filename} with {len(time)} points")
