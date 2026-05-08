@@ -40,7 +40,7 @@
 ### How to run (on Linux)
 * python3 -m astro_env venv
 * source astro_env/bin/activate
-* pip install numpy matplotlib scikit-learn scipy (for petersen script)
+* pip install numpy matplotlib scikit-learn
 * python3 fourierparametersplot.py
 * python3 petersenplot.py
 
