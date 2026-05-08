@@ -1,7 +1,9 @@
 ## This repository includes the following code
 
 ## Data Extraction (data)
-**Corresponding script:** `JNBcodeWithError.txt`
+
+### Script
+`JNBcodeWithError.txt`
 
 ### How to use
 - Open the notebook  
@@ -23,8 +25,16 @@
 
 ---
 
-## Individual Star Analysis (results)
-**Corresponding scripts:** `main_thesis.py` en `models_thesis.py`
+## Individual Star Analysis (Results)
+
+### Scripts
+- `main_thesis.py`
+- `models_thesis.py`
+
+### Input lightcurve files
+- `333.85683 +6.82261_sector82_['TESS-SPOC'] (1).txt` — ASAS J071842-5947.7  
+- `221.89696 +16.84542_sector51_['TESS-SPOC'] (1).txt` — DH Peg  
+- `109.67500 -59.79542_sector64_['TESS-SPOC'] (1).txt` — AE Boo  
 
 ### How to run (on Linux)
 * python3 -m astro_env venv
@@ -35,7 +45,10 @@
 ---
 
 ## Result Analysis (discussion)
-**Corresponding scripts:** `fourierparametersplot.py` en `petersenplot.py`
+
+### Scripts
+- `fourierparametersplot.py`
+-  `petersenplot.py`
 
 ### How to run (on Linux)
 * python3 -m astro_env venv
