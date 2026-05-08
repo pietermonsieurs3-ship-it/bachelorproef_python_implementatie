@@ -24,11 +24,20 @@
 ---
 
 ## Individual Star Analysis (results)
+**Corresponding scripts:** `main_thesis.py` en `models_thesis.py`
+
+### How to run (on Linux)
+* python3 -m astro_env venv
+* source astro_env/bin/activate
+* pip install numpy astropy matplotlib scipy lightkurve
+* python3 main_thesis.py
+
+---
 
 ## Result Analysis (discussion)
 **Corresponding scripts:** `fourierparametersplot.py` en `petersenplot.py`
 
-### How to run
+### How to run (on Linux)
 * python3 -m astro_env venv
 * source astro_env/bin/activate
 * pip install numpy matplotlib scikit-learn scipy (for petersen script)
